@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   siteMetadata: {
     title: `Alma Vacations`,
@@ -9,7 +11,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-layout`,
       options: {
-          component: require.resolve(`./src/components/Layout.js`)
+        component: require.resolve(`./src/components/Layout.js`),
       },
     },
     // {
@@ -26,12 +28,13 @@ module.exports = {
       },
     },
     `gatsby-transformer-sharp`,
+    `gatsby-transformer-yaml`,
     `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `content`,
-        path: `${__dirname}/src/content`
+        path: path.join(__dirname, `content`),
       },
     },
     `gatsby-transformer-remark`,

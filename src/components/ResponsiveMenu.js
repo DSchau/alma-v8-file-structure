@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Link } from 'gatsby'
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 import Button from './styled/Button'
 
@@ -23,7 +23,7 @@ const SmallMenu = styled.div`
   @media (min-width: ${props => props.size}) {
     display: none;
   }
-`;
+`
 
 const LargeMenu = styled.div`
   display: none;
@@ -60,7 +60,7 @@ const SLink = styled(Link)`
   text-decoration: none;
   padding: 1rem 2rem;
   line-height: 1;
-  color: #2D658E;
+  color: #2d658e;
   font-size: 16px;
 
   :focus {
@@ -80,13 +80,12 @@ const SLink = styled(Link)`
 // );
 
 class ResponsiveMenu extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      showMenu: false
-    };
+      showMenu: false,
+    }
   }
 
   // handleClick = () => {
@@ -94,51 +93,58 @@ class ResponsiveMenu extends Component {
   // };
 
   handleClick = () => {
-    this.setState((prevState) => {
-      return {showMenu: !prevState.showMenu}
-    });
-  };
+    this.setState(prevState => {
+      return { showMenu: !prevState.showMenu }
+    })
+  }
 
   render() {
-    const {
-      changeMenuOn,
-    } = this.props;
+    const { changeMenuOn, location } = this.props
+
+    const [locale] = location.pathname.split('/').slice(1)
+
     return (
       <>
         <LargeMenu size={changeMenuOn}>
-          <SLink to={`/resort`}>The Resort</SLink>
-          <SLink to={`/rooms`}>The Rooms</SLink>
-          <SLink to={`/amenities`}>The Amenities</SLink>
-          <SLink to={`/news`}>Latest News</SLink>
-          <SLink to={`/about`}>About Alma</SLink>
+          <SLink to={`/${locale}/resort`}>The Resort</SLink>
+          <SLink to={`/${locale}/rooms`}>The Rooms</SLink>
+          <SLink to={`/${locale}/amenities`}>The Amenities</SLink>
+          <SLink to={`/${locale}/news`}>Latest News</SLink>
+          <SLink to={`/${locale}/about`}>About Alma</SLink>
         </LargeMenu>
         <SmallMenu size={changeMenuOn}>
-          {
-            !this.state.showMenu ?
-            (<Button onClick={this.handleClick}>Menu</Button>)
-            :
-            (<Button onClick={this.handleClick}>Close</Button>)
-          }
-          {
-            this.state.showMenu ?
-              <MobileMenu>
-                <SLink to={`/resort`} onClick={this.handleClick}>The Resort</SLink>
-                <SLink to={`/rooms`} onClick={this.handleClick}>The Rooms</SLink>
-                <SLink to={`/amenities`} onClick={this.handleClick}>The Amenities</SLink>
-                <SLink to={`/news`} onClick={this.handleClick}>Latest News</SLink>
-                <SLink to={`/about`} onClick={this.handleClick}>About Alma</SLink>
-              </MobileMenu>
-            :
-            null
-          }
+          {!this.state.showMenu ? (
+            <Button onClick={this.handleClick}>Menu</Button>
+          ) : (
+            <Button onClick={this.handleClick}>Close</Button>
+          )}
+          {this.state.showMenu ? (
+            <MobileMenu>
+              <SLink to={`/${locale}/resort`} onClick={this.handleClick}>
+                The Resort
+              </SLink>
+              <SLink to={`/${locale}/rooms`} onClick={this.handleClick}>
+                The Rooms
+              </SLink>
+              <SLink to={`/${locale}/amenities`} onClick={this.handleClick}>
+                The Amenities
+              </SLink>
+              <SLink to={`/${locale}/news`} onClick={this.handleClick}>
+                Latest News
+              </SLink>
+              <SLink to={`/${locale}/about`} onClick={this.handleClick}>
+                About Alma
+              </SLink>
+            </MobileMenu>
+          ) : null}
         </SmallMenu>
       </>
-    );
+    )
   }
 }
 
 ResponsiveMenu.propTypes = {
   changeMenuOn: PropTypes.string.isRequired,
-};
+}
 
-export default ResponsiveMenu;
+export default ResponsiveMenu

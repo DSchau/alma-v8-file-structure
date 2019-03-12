@@ -9,7 +9,7 @@ import Main from './styled/Main'
 import Logo from './Logo'
 import Shell from './Shell'
 import Button from './styled/Button'
-import ResponsiveMenu from './ResponsiveMenu.js';
+import ResponsiveMenu from './ResponsiveMenu.js'
 import Div100vh from 'react-div-100vh'
 
 import almaLogoWithBG from '../images/alma-logo-with-bg.svg'
@@ -62,41 +62,46 @@ const titleQuery = graphql`
   }
 `
 
-const Layout = ({ children }) => (
-  <StaticQuery
-    query={titleQuery}
-    render={data => (
-      <Fragment>
-        <Helmet
-          title={data.site.siteMetadata.title}
-          meta={[
-            { name: 'description', content: 'Sample' },
-            { name: 'keywords', content: 'sample, something' },
-          ]}
-        >
-          <html lang="en" />
-        </Helmet>
-        <Div100vh>
-          <App>
-            <Logo to={`/`}>
-              <img src={almaLogoWithBG} alt="The Alma Resort Logo."  />
-            </Logo>
-            <ResponsiveMenu changeMenuOn="50rem"/>
-            <Shell to={`/`}>
-              <img src={almaShell} alt="The Alma Resort Shell."  />
-            </Shell>
-            <Contact>
-              <Button>Join</Button>
-            </Contact>
-            <Main>
-              {children}
-            </Main>
-            <BeeGee></BeeGee>
-          </App>
-        </Div100vh>
-      </Fragment>
-    )}
-  />
-)
+const Layout = ({ children, location }) => {
+  const [locale] = location.pathname.split('/').slice(1)
+  return (
+    <StaticQuery
+      query={titleQuery}
+      render={data => (
+        <Fragment>
+          <Helmet
+            title={data.site.siteMetadata.title}
+            meta={[
+              { name: 'description', content: 'Sample' },
+              { name: 'keywords', content: 'sample, something' },
+            ]}
+          >
+            <html lang="en" />
+          </Helmet>
+          {locale && locale.length > 0 ? (
+            <Div100vh>
+              <App>
+                <Logo to={`/${locale}`}>
+                  <img src={almaLogoWithBG} alt="The Alma Resort Logo." />
+                </Logo>
+                <ResponsiveMenu changeMenuOn="50rem" location={location} />
+                <Shell to={`/${locale}`}>
+                  <img src={almaShell} alt="The Alma Resort Shell." />
+                </Shell>
+                <Contact>
+                  <Button>Join</Button>
+                </Contact>
+                <Main>{children}</Main>
+                <BeeGee />
+              </App>
+            </Div100vh>
+          ) : (
+            <Main>{children}</Main>
+          )}
+        </Fragment>
+      )}
+    />
+  )
+}
 
 export default Layout
